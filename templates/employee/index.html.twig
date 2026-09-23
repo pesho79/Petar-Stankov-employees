@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Employee Collaboration
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/employee.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h1>Employee Collaboration</h1>
+
+    <form
+        action="{{ path('employee_index') }}"
+        method="post"
+        enctype="multipart/form-data"
+    >
+        <input
+            type="file"
+            name="file"
+            accept=".csv,text/csv"
+            required
+        >
+
+        <button type="submit">
+            Upload CSV
+        </button>
+    </form>
+
+    {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    {% if results %}
+        <table>
+            <thead>
+            <tr>
+                <th>Employee ID #1</th>
+                <th>Employee ID #2</th>
+                <th>Project ID</th>
+                <th>Days worked</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for result in results %}
+                <tr>
+                    <td>{{ result.employee1 }}</td>
+                    <td>{{ result.employee2 }}</td>
+                    <td>{{ result.projectId }}</td>
+                    <td>{{ result.days }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% elseif not error %}
+        <p class="empty">
+            Upload a CSV file to calculate employee collaboration.
+        </p>
+    {% endif %}
+{% endblock %}
